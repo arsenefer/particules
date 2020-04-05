@@ -1,0 +1,29 @@
+<html>
+<header>
+        <link rel="stylesheet" href="style.css">
+        <script src="model.js"></script>
+        <script src = "https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</header>
+<body>
+        
+    <div class="container">
+        <div id ='gauche'>
+            <div id = 'ControlPanel'>
+                <h3>Tableau de Bord</h3>
+                <div id = 'ButtonContainer'>
+                    <span class="button" onclick="start_stop()"> start / suspend </span>
+                    <span class="button" onclick="add()">Add Sick</span>
+                    <span class="button" onclick="kill()">Kill a sick</span>
+                </div>
+                <div id = 'CursorContainer'>
+                    <span>Temps de guerison<input type="range" min="1" max="100" value="50" class="slider" id="T_guerri"></span>
+                    <span>Transmissivite<input type="range" min="1" max="100" value="50" class="slider" id="Transm"></span>
+                    <span>Population<input type="range" min="1" max="500" value="250" class="slider" id="Pop"></span>
+                </div>
+            </div>
+        <span id = 'chartContainer'></span>
+        </div>
+        <svg></svg>
+    </div>
+</body>
+</html>

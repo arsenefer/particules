@@ -1,0 +1,97 @@
+.container {
+  display: grid;
+  height: 100%;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+}
+
+
+#gauche{
+  display: grid;
+  grid-template-rows: 40% 60%;
+  grid-template-columns: auto;
+  grid-gap: 10px;
+  margin:10px;
+}
+
+
+#ControlPanel{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  border: 5px solid #75b79e;
+}
+
+#ControlPanel>h3{
+  height: 1pt;
+  width: 100%;
+  text-align: center;
+}
+
+#ControlPanel>div{
+  all: inherit;
+  flex-grow: 0.5;
+  flex-wrap: nowrap;
+  border: 3px solid #4e7768;
+  margin: 3px;
+  height: 50px;
+  border-radius: 13px;
+}
+
+#CursorContainer>span{
+  text-align: center;
+}
+
+
+
+
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  border-radius: 13px;
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  border-radius: 25px;
+  cursor: grab; /* Cursor on hover */
+}
+.slider::-webkit-slider-thumb:active{
+  cursor:grabbing;
+}
+
+
+.button {
+  margin : 10px;
+  border: 2px solid #4CAF50;
+  border-radius: 13px;
+  padding: 10px;
+  cursor: hand;
+}
+
+svg {
+  border: 5px solid #75b79e;
+  flex-shrink: 0;
+  margin:10px;
+}
+circle {
+  display:block;
+  stroke: rgb(15, 19, 20); 
+  stroke-width: 1;
+}
