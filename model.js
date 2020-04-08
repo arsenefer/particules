@@ -247,7 +247,7 @@ function InitMonde(){
     var slider_pop = document.getElementById("Pop");
     T_guerri = slider_guerri.value/T;
     Transm = slider_transm.value/100;
-    nb_sain = slider_pop.value-1;
+    nb_sain = slider_pop.value - 1;
     add()
     for (var i = 0; i < nb_sain; i++) {
         x = Math.random()*width;
@@ -257,7 +257,7 @@ function InitMonde(){
         dy = 2*dl*(Math.random()-0.5);
         Particules.push(new particule(x, y, r, dx, dy, 0));
         }
-    for(var i of Particules){
+    for(var i of Particules.slice(1)){
         i.draw()
     }
 }
@@ -271,9 +271,11 @@ function add(){
     a = new particule(x, y, r, dx, dy, 1);
     a.time = 0;
     Particules.push(a);
+    a.draw()
     nb_malade ++;
-    needtoplot = true
+    needtoplot = true;
 }
+
 function kill(){
     let i = Particules.length-1
     while (i>0 & Particules[i].state != 1){
@@ -281,6 +283,8 @@ function kill(){
     }
     if (Particules[i].state == 1){
         Particules.splice(i, 1)
+        let svg = document.querySelector("svg")
+        svg.removeChild(svg.children[i]);
         nb_malade --;
         needtoplot = true;
     }
@@ -347,6 +351,7 @@ function Newframe(svg){
         }
     }
     let Ronds = $( svg ).children();
+    console.log(Ronds.length, Particules.length)
     for (var i = 0; i < Particules.length; i += 1){
         var part = Particules[i]
         part.deplacement();
