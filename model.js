@@ -32,14 +32,14 @@ let Particules = new Array;
 /* generates random circles in specified area */
 class particule {
     
-    constructor(start_x, start_y, radius,v_x,v_y,state) {
+    constructor(start_x, start_y, radius,dx,dy,state) {
         this.x = start_x;
         this.y = start_y;
         this.r = radius;
         
         this.time = NaN;
-        this.v_x = v_x;
-        this.v_y = v_y;
+        this.dx = dx;
+        this.dy = dy;
         this.state = state;
     }
     
@@ -49,7 +49,7 @@ class particule {
         c.setAttribute('cx', this.x); // svg's circle center
         c.setAttribute('cy', this.y);
         c.setAttribute('r', this.r);  // svg's circle radius
-        c.setAttribute('class',part)
+        c.setAttribute('class','part')
         switch (this.state) {
             case 0:
                 c.setAttribute('fill', 'yellow')
@@ -64,19 +64,19 @@ class particule {
                 c.setAttribute('fill','black')
                 break     
         }
-        svg.append(c);
+        svg.append(c)
     }
 
     mur(){
         if (this.x-this.r < 0){
-            this.v_x = Math.abs(this.v_x)
+            this.dx = Math.abs(this.dx)
         }else{if (this.x + this.r>width){
-            this.v_x = -Math.abs(this.v_x)
+            this.dx = -Math.abs(this.dx)
         }}
         if (this.y-this.r < 0){
-            this.v_y = Math.abs(this.v_y)
+            this.dy = Math.abs(this.dy)
         }else{if (this.y +this.r> height){
-            this.v_y = -Math.abs(this.v_y)
+            this.dy = -Math.abs(this.dy)
         }}
         
     }
@@ -97,31 +97,34 @@ class particule {
     colision(autre){
         let dist = Math.pow(autre.x-this.x,2) + Math.pow(autre.y-this.y,2);
         if (dist <= Math.pow(autre.r+this.r+2,2)){
-            autre.v_x = dl*(Math.random()-0.5);
-            autre.v_y = dl*(Math.random()-0.5);
+            autre.dx = 2*dl*(Math.random()-0.5);
+            autre.dy = 2*dl*(Math.random()-0.5);
             
-            this.v_x = dl*(Math.random()-0.5);
-            this.v_y = dl*(Math.random()-0.5);
+            this.dx = 2*dl*(Math.random()-0.5);
+            this.dy = 2*dl*(Math.random()-0.5);
             
             this.transmition(autre) //on regarde si on donne
             autre.transmition(this)  //on regarde si on reçoit
         }
     }
-    
-    update(){
+    ChangementEtat(){
         if (this.time > T_guerri){
             if (this.state == 1){
                 this.state = 2;
+                this.time = NaN;
                 nb_guerri ++;
                 nb_malade --;
                 needtoplot = true;
             }
         }
-        this.mur()
-        this.x = this.x + this.v_x;
-        this.y = this.y + this.v_y;
+    }
+    
+    deplacement(){
+        this.ChangementEtat();
+        this.mur();
+        this.x = this.x + this.dx;
+        this.y = this.y + this.dy;
         this.time += 1;
-        this.draw()
         }
     }
     
@@ -145,18 +148,22 @@ function sliding(){
         if (this.value-1 < nb_sain){
             Particules = Particules.slice(nb_sain-this.value+1)
             console.log('en dessous')
+            for (var i =0;i<= nb_sain-this.value+1; i++){
+                svg.removeChild(svg.firstChild);
+            }
         }else{
             for(let i=0;i<this.value-1-nb_sain;i++){
                 x = Math.random()*width;
                 y = Math.random()*height;
                 r = Math.floor(Math.random()*3+3);
-                vx = dl*(Math.random()-0.5);
-                vy = dl*(Math.random()-0.5);
-                Particules.unshift(new particule(x, y, r, vx, vy, 0));
+                dx = 2*dl*(Math.random()-0.5);
+                dy = 2*dl*(Math.random()-0.5);
+                let part = new particule(x, y, r, dx, dy, 0)
+                Particules.unshift(part);
+                part.draw()
             }
         }
         nb_sain = this.value-1;
-        Newframe(svg)
     }
     let svg = document.querySelector("svg");
     Newframe(svg);
@@ -169,19 +176,25 @@ for (var i = 0; i < nb_sain; i++) {
     x = Math.random()*width;
     y = Math.random()*height;
     r = Math.floor(Math.random()*3+3);
-    vx = dt*(Math.random()-0.5);
-    vy = dt*(Math.random()-0.5);
-    Particules.push(new particule(x, y, r, vx, vy, 0));
+    dx = 2*dl*(Math.random()-0.5);
+    dy = 2*dl*(Math.random()-0.5);
+    Particules.push(new particule(x, y, r, dx, dy, 0));
   }
 add()
+
+function InitMonde(){
+    for(var i of Particules){
+        i.draw()
+    }
+}
 
 function add(){
     x = Math.random()*width;
     y = Math.random()*height;
     r = Math.floor(Math.random()*3+3);
-    vx = dl*(Math.random()-0.5);
-    vy = dl*(Math.random()-0.5);
-    a = new particule(x, y, r, vx, vy, 1);
+    dx = 2*dl*(Math.random()-0.5);
+    dy = 2*dl*(Math.random()-0.5);
+    a = new particule(x, y, r, dx, dy, 1);
     a.time = 0;
     Particules.push(a);
     nb_malade ++;
@@ -205,11 +218,7 @@ function start_stop(){
     }
 
 
-function clearsvg(svg){
-    while (svg.lastChild) {
-        svg.removeChild(svg.lastChild);
-    }
-}
+
 
 function graph(){
     var chart = new CanvasJS.Chart("chartContainer", {
@@ -257,17 +266,35 @@ function graph(){
     };
 
 function Newframe(svg){
-    clearsvg(svg)
     for (var i=0; i< Particules.length;i++){
         part = Particules[i];
         for (var j=0; j<i; j++){
             part.colision(Particules[j]);
         }
     }
-    for (var part of Particules){
-        part.update();
+    let Ronds = $( svg ).children();
+    for (var i = 0; i < Particules.length; i += 1){
+        var part = Particules[i]
+        part.deplacement();
+        let rond = Ronds[i]
+        rond.setAttribute('cx',part.x)
+        rond.setAttribute('cy',part.y)
+        switch (part.state) {
+            case 0:
+                rond.setAttribute('fill', 'yellow')
+                break;
+            case 1:
+                rond.setAttribute('fill', 'pink');
+                break;
+            case 2:
+                rond.setAttribute('fill','blue');
+                break;
+            case -1:
+                rond.setAttribute('fill','black')
+                break     
+        }
     }
-    if (needtoplot || t%500 == 0){
+    if (( needtoplot || t%500 == 0 ) & t%25 == 0 ){
         let N = nb_guerri + nb_malade + nb_sain;
         Contamines.push({x:t, y:nb_malade/N});
         Sains.push({x:t, y:nb_sain/N});
@@ -279,7 +306,9 @@ function Newframe(svg){
 }
 
 window.onload = function () { 
+    InitMonde()
     let svg = document.querySelector("svg");
+    console.log(svg)
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
     Newframe(svg);
