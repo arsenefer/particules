@@ -15,13 +15,22 @@
                 <h3>Tableau de Bord</h3>
                 <div id = 'ButtonContainer'>
                     <span class="button" onclick="start_stop()"> start / suspend </span>
-                    <span class="button" onclick="add()">Add Sick</span>
+                    <span class="button" onclick="add(true)">Add Sick</span>
                     <span class="button" onclick="kill()">Kill a sick</span>
                 </div>
                 <div id = 'CursorContainer'>
-                    <span>Temps de guerison<input type="range" min="1" max="100" value="20" class="slider" id="T_guerri"></span>
-                    <span>Transmissivite<input type="range" min="1" max="100" value="14" class="slider" id="Transm"></span>
-                    <span>Population<input type="range" min="1" max="500" value="200" class="slider" id="Pop"></span>
+                    <div id="guerri">
+                        <span>Temps de guerison<input type="range" min="1" max="100" value="20" class="slider" id="T_guerri"></span>
+                        <span class="ecran"></span>
+                    </div>
+                    <div id="tran">
+                        <span>Transmissivite<input type="range" min="1" max="100" value="14" class="slider" id="Transm"></span>
+                        <span class="ecran"></span>
+                    </div>
+                    <div id="popu">
+                        <span>Population<input type="range" min="1" max="500" value="200" class="slider" id="Pop"></span>
+                        <span class="ecran"></span>
+                    </div>
                 </div>
             </div>
         <span id = 'chartContainer'></span>
