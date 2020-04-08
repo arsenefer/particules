@@ -246,6 +246,15 @@ function InitMonde(){
     T_guerri = slider_guerri.value/T;
     Transm = slider_transm.value/100;
     nb_sain = slider_pop.value - 1;
+    nb_guerri = 0;
+    nb_malade = 0;
+    onoff = false;
+    t = 0;
+    Particules = new Array;
+    Contamines = new Array; //nombre de contaminees AU COURS DU TEMPS
+    Sains = new Array;      //nombre de sains AU COURS DU TEMPS
+    Guerris = new Array;
+
     add()
     for (var i = 0; i < nb_sain; i++) {
         x = Math.random()*width;
@@ -394,4 +403,12 @@ window.onload = function () {
         }
         }, T)
     
+}
+function reset(){
+    let svg = document.querySelector("svg");
+    while (svg.lastChild) {
+        svg.removeChild(svg.lastChild);
+    }
+
+    InitMonde();
 }
