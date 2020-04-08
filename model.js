@@ -164,21 +164,19 @@ function sliding(){
     var slider_transm = document.getElementById("Transm");
     var slider_pop = document.getElementById("Pop");
 
+    var ecrans = document.getElementsByClassName('ecran')
+
+
     //si on deplace le slider
     slider_guerri.oninput = function() {
         T_guerri = this.value/T;
+        ecrans[0].innerHTML = this.value
     }
     slider_transm.oninput = function() {
         Transm = this.value/100;
+        ecrans[1].innerHTML = Transm
     }
     slider_pop.oninput = function() {
-        var x; 
-        var y;
-        var r;
-        var dx;
-        var dy;
-        var s;
-        var part;
         /*  On ne peut pas simplement changer nb_sain
             Car il faut aussi changer le t'nregistrment 
             des particules.
@@ -198,17 +196,17 @@ function sliding(){
             }
         }else{
             for(var i=0; i < newN - N;i++){
-                x = Math.random()*width;
-                y = Math.random()*height;
-                r = Math.floor(Math.random()*3+3);
-                dx = 2*dl*(Math.random()-0.5);
-                dy = 2*dl*(Math.random()-0.5);
-                part = new particule(x, y, r, dx, dy, 0)
+                var x = Math.random()*width;
+                var y = Math.random()*height;
+                var r = Math.floor(Math.random()*3+3);
+                var dx = 2*dl*(Math.random()-0.5);
+                var dy = 2*dl*(Math.random()-0.5);
+                var part = new particule(x, y, r, dx, dy, 0)
                 Particules.push(part);
                 part.draw()
             }
         }
-    s = 0;
+    var s = 0;
     i = 0;
     r =0;
     for(var part of Particules){
@@ -231,8 +229,10 @@ function sliding(){
     nb_guerri = r;
     nb_malade = i;
     N = s + r + i;
-    console.log(N)
     Newframe(svg);
+    ecrans[2].innerHTML = N
+
+
     }
 
 }
@@ -243,9 +243,14 @@ function InitMonde(){
     var slider_guerri = document.getElementById("T_guerri");
     var slider_transm = document.getElementById("Transm");
     var slider_pop = document.getElementById("Pop");
+    
     T_guerri = slider_guerri.value/T;
+
     Transm = slider_transm.value/100;
-    nb_sain = slider_pop.value - 1;
+
+    N = slider_pop.value;
+
+    nb_sain = N - 1;
     nb_guerri = 0;
     nb_malade = 0;
     onoff = false;
@@ -254,8 +259,7 @@ function InitMonde(){
     Contamines = new Array; //nombre de contaminees AU COURS DU TEMPS
     Sains = new Array;      //nombre de sains AU COURS DU TEMPS
     Guerris = new Array;
-
-    add()
+    add(false)
     for (var i = 0; i < nb_sain; i++) {
         x = Math.random()*width;
         y = Math.random()*height;
@@ -267,9 +271,13 @@ function InitMonde(){
     for(var i of Particules.slice(1)){
         i.draw()
     }
+    var ecrans = document.getElementsByClassName('ecran')
+    ecrans[0].innerHTML = T_guerri*T
+    ecrans[1].innerHTML = Transm
+    ecrans[2].innerHTML = N;
 }
 
-function add(){
+function add(running){
     x = Math.random()*width;
     y = Math.random()*height;
     r = Math.floor(Math.random()*3+3);
@@ -279,8 +287,15 @@ function add(){
     a.time = 0;
     Particules.push(a);
     a.draw()
+    if(running){
+        N++;
+        document.getElementById("Pop").value = N;
+        document.getElementsByClassName('ecran')[2].innerHTML = N;
+    }
     nb_malade ++;
-    needtoplot = true;
+    eedtoplot = true;
+
+
 }
 
 function kill(){
@@ -293,6 +308,7 @@ function kill(){
         let svg = document.querySelector("svg")
         svg.removeChild(svg.children[i]);
         nb_malade --;
+        N--
         needtoplot = true;
     }
 }
