@@ -28,7 +28,7 @@ let Guerris = new Array;    //nombre de guerrisAU COURS DU TEMPS
 let Particules = new Array; //initialisation du tableau avec toutes les particules
 
 
-
+//definition de la classe
 
 
 class particule {
@@ -236,8 +236,6 @@ function sliding(){
     }
 
 }
-    
-
 
 
 
@@ -289,14 +287,6 @@ function kill(){
         needtoplot = true;
     }
 }
-
-let onoff = false;
-function start_stop(){
-    onoff = ! onoff;
-    }
-
-
-
 
 function graph(){
     var chart = new CanvasJS.Chart("chartContainer", {
@@ -382,7 +372,10 @@ function Newframe(svg){
     }
 }
 
-
+let onoff = false;
+function start_stop(){
+    onoff = ! onoff;
+    }
 
 
 window.onload = function () { 
