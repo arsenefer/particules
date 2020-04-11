@@ -241,22 +241,24 @@ function sliding(){
 
     }
     slider_confin.oninput = function(){
-        confin = slider_confin.value
-        for (var i=0; i< N;i++){
-        if (i<confin * N){
+        confin = slider_confin.value;
+        for (let i=0; i< N;i++){
             part = Particules[i];
-            part.comportement = 0;
-            part.dx = 0;
-            part.dy = 0;
-            ecrans[3].innerHTML = confin;
-        }else{
-            let vit = comportement * dl
-            dx = 2*vit*(Math.random()-0.5)
-            dy = 2*vit*(Math.random()-0.5)
-            part.comportement = comportement;
-            part.dx = dx;
-            part.dy = dy;
-        }
+            if (i<confin * N){
+                console.log("confiné")
+                part.comportement = 0;
+                part.dx = 0;
+                part.dy = 0;
+                ecrans[3].innerHTML = confin;
+            }else{
+                let vit = comportement * dl
+                let dx = 2*vit*(Math.random()-0.5)
+                let dy = 2*vit*(Math.random()-0.5)
+                part.comportement = comportement;
+                part.dx = dx;
+                part.dy = dy;
+                console.log("deconfit"), part
+            }
     }
     }
 }
