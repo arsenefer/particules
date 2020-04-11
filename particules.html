@@ -1,5 +1,6 @@
 <html lang="fr">
 <headers>
+    <link href="part.ico" rel="shortcut icon" >
     <title>Simulation</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
@@ -19,17 +20,26 @@
                     <span class="button" onclick="kill()">Kill a sick</span>
                 </div>
                 <div id = 'CursorContainer'>
-                    <div id="guerri">
-                        <span>Temps de guerison<input type="range" min="1" max="100" value="20" class="slider" id="T_guerri"></span>
-                        <span class="ecran"></span>
+                    <div id="Guerri">
+                        <span id='TG'>Temps de guerison</span>
+                        <input type="range" min="1" max="100" value="20" class="slider" id="T_guerri">
+                        <span class="ecran" id='EG'></span>
                     </div>
-                    <div id="tran">
-                        <span>Transmissivite<input type="range" min="1" max="100" value="14" class="slider" id="Transm"></span>
-                        <span class="ecran"></span>
+                    <div id="Treansmission">
+                        <span id='TT'>Transmissivite</span>
+                        <input type="range" min="0" max="1" step="0.01" value="14" class="slider" id="Transm">
+                        <span class="ecran" id = 'ET'></span>
                     </div>
-                    <div id="popu">
-                        <span>Population<input type="range" min="1" max="500" value="200" class="slider" id="Pop"></span>
-                        <span class="ecran"></span>
+                    <div id="Population">
+                        <span id='TP'>Population</span>
+                        <input type="range" min ='1' max='500' value="200" class="slider" id="Pop">
+                        <span class="ecran" id = 'EP'></span>
+                    </div>
+
+                    <div id="Confinement">
+                        <span id='TC'>Prop. de confinés</span>
+                        <input type="range" min="0" max="1" value="0.5" step = '0.01' class="slider" id="conf">
+                        <span class="ecran" id = 'EC'></span>
                     </div>
                 </div>
             </div>
