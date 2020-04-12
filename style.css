@@ -1,3 +1,11 @@
+@font-face {
+  font-family: seven;
+  src: url(image/font/dseg7classicmini-bold-webfont.woff)
+}
+
+
+
+
 .container {
   display: grid;
   height: 100%;
@@ -50,14 +58,32 @@
   margin:10px;
   text-align: center;
   flex-grow: 0.3;
+  flex-shrink: 0;
   display: grid;
   grid-template-rows: auto auto auto;
+  justify-items: center;
 }
 #CursorContainer>div>span{
-  width: max-content;
   text-align: center;
 }
-
+.ecran{
+  font-family: 'seven';
+  font-size: 20pt;
+  color: #c2c5f0;
+  grid-column: 1/2;
+  grid-row: 3/4;
+  padding: 3px;
+}
+.background{
+  background-color: #3a3b4b;
+  border-radius: 5px;
+  font-family: 'seven';
+  font-size: 20pt;
+  color: #4f5060;
+  grid-column: 1/2;
+  grid-row: 3/4;
+  padding: 3px;
+}
 
 
 .slider {

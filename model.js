@@ -117,6 +117,7 @@ class particule {
         /**
          * Est appele lorsque deux particules rentrent en contact
          */ 
+        let res = false
         let dist = Math.pow(autre.x-this.x,2) + Math.pow(autre.y-this.y,2); //(Dx**2+Dy**2)
         if (dist <= Math.pow(autre.r+this.r,2)){ //plus petit que la somme des rayons
             let vit = dl * autre.comportement
@@ -127,9 +128,11 @@ class particule {
             this.dx = 2*vit*(Math.random()-0.5);
             this.dy = 2*vit*(Math.random()-0.5);
             
-            this.transmition(autre) //on regarde si on donne
-            autre.transmition(this)  //on regarde si on reçoit
+            this.transmition(autre); //on regarde si on donne
+            autre.transmition(this);  //on regarde si on reçoit
+            res = true;
         }
+        return res;
     }
     ChangementEtat(){
         /**
@@ -173,12 +176,12 @@ function sliding(){
     var ecrans = document.getElementsByClassName('ecran')
     //si on deplace le slider
     slider_guerri.oninput = function() {
-        T_guerri = this.value/T;
-        ecrans[0].innerHTML = this.value
+        T_guerri = Number(this.value)/T;
+        ecrans[0].innerHTML = ('000' + this.value).substr(-3);
     }
     slider_transm.oninput = function() {
-        Transm = this.value;
-        ecrans[1].innerHTML = Transm
+        Transm = Number(this.value);
+        ecrans[1].innerHTML = Transm.toFixed(2);
     }
     slider_pop.oninput = function() {
         /*  On ne peut pas simplement changer nb_sain
@@ -187,7 +190,7 @@ function sliding(){
         
         */
         N = nb_malade + nb_guerri + nb_sain;
-        let newN = this.value;
+        let newN = Number(this.value);
         let svg = document.querySelector("svg");
         if (newN < N){
             /* Si on est plus bas que l'ancienne valeur de N
@@ -237,11 +240,11 @@ function sliding(){
     nb_guerri = r;
     nb_malade = i;
     N = s + r + i;
-    ecrans[2].innerHTML = N
+    ecrans[2].innerHTML = ('000' + N).substr(-3);
 
     }
     slider_confin.oninput = function(){
-        confin = slider_confin.value;
+        confin = Number(this.value);
         for (let i=0; i< N;i++){
             part = Particules[i];
             if (i<confin * N){
@@ -249,7 +252,6 @@ function sliding(){
                 part.comportement = 0;
                 part.dx = 0;
                 part.dy = 0;
-                ecrans[3].innerHTML = confin;
             }else{
                 let vit = comportement * dl
                 let dx = 2*vit*(Math.random()-0.5)
@@ -259,6 +261,7 @@ function sliding(){
                 part.dy = dy;
                 console.log("deconfit"), part
             }
+            ecrans[3].innerHTML = confin.toFixed(2);
     }
     }
 }
@@ -270,11 +273,11 @@ function InitMonde(){
     var slider_pop = document.getElementById("Pop");
     var slider_confin = document.getElementById("conf");
 
-    T_guerri = slider_guerri.value/T;
+    T_guerri = Number(slider_guerri.value/T);
 
-    Transm = slider_transm.value;
-    confin = slider_confin.value;
-    N = slider_pop.value;
+    Transm = Number(slider_transm.value);
+    confin = Number(slider_confin.value);
+    N = Number(slider_pop.value);
 
     nb_sain = N - 1;
     nb_guerri = 0;
@@ -303,10 +306,10 @@ function InitMonde(){
         part.draw()
         }
     var ecrans = document.getElementsByClassName('ecran')
-    ecrans[0].innerHTML = T_guerri*T
-    ecrans[1].innerHTML = Transm
-    ecrans[2].innerHTML = N;
-    ecrans[3].innerHTML = confin;
+    ecrans[0].innerHTML = ('000'+ T_guerri*T).substr(-3);
+    ecrans[1].innerHTML = Transm.toFixed(2);
+    ecrans[2].innerHTML = ('000'+ N).substr(-3);
+    ecrans[3].innerHTML = confin.toFixed(2);
 }
 
 function add(running){
@@ -397,7 +400,7 @@ function graph(){
 
 
 function Newframe(svg){
-    for (var i=0; i< N;i++){
+    for (let i=0; i< N;i++){
         part = Particules[i];
         for (var j=0; j<i; j++){
             part.colision(Particules[j]);
@@ -426,11 +429,11 @@ function Newframe(svg){
     }
     if (( needtoplot || t%500 == 0 ) & t%25 == 0 ){
         let N = nb_guerri + nb_malade + nb_sain;
-        Contamines.push({x:t, y:nb_malade/N});
-        Sains.push({x:t, y:nb_sain/N});
-        Guerris.push({x:t, y:nb_guerri/N});
+        Contamines.push({x:t*T, y:nb_malade/N});
+        Sains.push({x:t*T, y:nb_sain/N});
+        Guerris.push({x:t*T, y:nb_guerri/N});
         graph()
-        needtoplot = false
+        needtoplot = false;
     }
 }
 
