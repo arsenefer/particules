@@ -39,6 +39,9 @@
 
 #ControlPanel>h3{
   width: 100%;
+  border-bottom: 4px solid #3a3b4b;
+  padding-bottom: 10px;
+  margin-top: 0px;
   text-align: center;
 }
 
