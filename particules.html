@@ -1,10 +1,11 @@
 <html lang="fr">
 <headers>
-    <link href="image/part.ico" rel="shortcut icon" >
+    <link href="image/part.ico" rel="shortcut icon" type="image/x-icon"/>
     <title>Simulation</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
     <script src="model.js"></script>
+    <script src="quadtree.js"></script>
     <script src = "https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </headers>
@@ -50,7 +51,7 @@
         <span id = 'chartContainer'></span>
         </div>
         <div id = 'droite' class = 'side'>
-            <svg></svg>
+            <svg onclick="mouse_position()"></svg>
             <div>
                 <span class="button" id ='rst' onclick="reset()">Reset</span>
             </div>

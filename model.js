@@ -1,8 +1,8 @@
 const svgNS = "http://www.w3.org/2000/svg";
 
 //constantes graphiques
-const width = 600;          //initalisation largeur
-const height = 600;         //Initialisation hauteur
+const width = 800;          //initalisation largeur
+const height = 800;         //Initialisation hauteur
 
 
 //Constantes de temps
@@ -29,7 +29,7 @@ let Guerris = new Array;    //nombre de guerrisAU COURS DU TEMPS
 
 let Particules = new Array; //initialisation du tableau avec toutes les particules
 
-
+let check =0;
 //definition de la classe
 
 
@@ -102,8 +102,8 @@ class particule {
          * Transmet l'etat 1 avec une probabilité Transm
          */
         if (this.state == 1){
-            r = Math.random()
-            if (autre.state == 0 & r < Transm){
+            let p = Math.random()
+            if (autre.state == 0 & p < Transm){
                 autre.state = 1; //etat transmit
                 autre.time = 0;  
                 nb_malade ++; //un nouveau malade
@@ -112,7 +112,6 @@ class particule {
             }
         }
     }
-
     colision(autre){
         /**
          * Est appele lorsque deux particules rentrent en contact
@@ -120,20 +119,23 @@ class particule {
         let res = false
         let dist = Math.pow(autre.x-this.x,2) + Math.pow(autre.y-this.y,2); //(Dx**2+Dy**2)
         if (dist <= Math.pow(autre.r+this.r,2)){ //plus petit que la somme des rayons
-            let vit = dl * autre.comportement
+/*             let vit = dl * autre.comportement
             autre.dx = 2*vit*(Math.random()-0.5);  //Nouvelle direction de déplacement aleatoire
-            autre.dy = 2*vit*(Math.random()-0.5);  
+            autre.dy = 2*vit*(Math.random()-0.5);   */
             
-            vit = this.comportement * dl
+            let vit = this.comportement * dl
             this.dx = 2*vit*(Math.random()-0.5);
             this.dy = 2*vit*(Math.random()-0.5);
             
             this.transmition(autre); //on regarde si on donne
-            autre.transmition(this);  //on regarde si on reçoit
+//            autre.transmition(this);  //on regarde si on reçoit
             res = true;
+            
         }
+        check ++;
         return res;
     }
+
     ChangementEtat(){
         /**
          * Est on malade depuis suffisament longtemps pur être guerri ?
@@ -292,8 +294,8 @@ function InitMonde(){
     for (var i = 0; i < nb_sain; i++) {
         var x = Math.random()*width;
         var y = Math.random()*height;
-        var r = Math.floor(Math.random()*3+3);
-        
+        // var r = Math.floor(Math.random()*3+3);
+        var r = 6;
         var part = new particule(x, y, r, 0, 0, 0)
         if (i < confin * nb_sain){
             part.comportement = 0; //elle est totalement confinée.
@@ -313,13 +315,14 @@ function InitMonde(){
 }
 
 function add(running){
-    x = Math.random()*width;
-    y = Math.random()*height;
-    r = Math.floor(Math.random()*3+3);
-    vit = comportement * dl
-    dx = 2*vit*(Math.random()-0.5);
-    dy = 2*vit*(Math.random()-0.5);
-    a = new particule(x, y, r, dx, dy, 1);
+    let x = Math.random()*width;
+    let y = Math.random()*height;
+    let r=6
+    // r = Math.floor(Math.random()*3+3);
+    let vit = comportement * dl
+    let dx = 2*vit*(Math.random()-0.5);
+    let dy = 2*vit*(Math.random()-0.5);
+    let a = new particule(x, y, r, dx, dy, 1);
     a.time = 0;
     Particules.push(a);
     a.draw()
@@ -400,12 +403,24 @@ function graph(){
 
 
 function Newframe(svg){
-    for (let i=0; i< N;i++){
-        part = Particules[i];
-        for (var j=0; j<i; j++){
-            part.colision(Particules[j]);
-        }
+    check = 0
+    let region = new Rectangle(width/2,height/2,width/2,height/2)
+    let qt = new QuadTree(region,Math.floor(N/20));
+    for (let i =0; i<N; i++){
+        var part = Particules[i]
+        let p = new Point(part.x,part.y,i)
+        qt.insert(p)
     }
+    for (let i =0; i<N; i++){
+        var part = Particules[i];
+        let range = new Circle(part.x, part.y, 12)
+        let seen = qt.query(range);
+            for (let point of seen){ 
+                if (i!=point.userData){
+                part.colision(Particules[point.userData]) }
+            }
+        }
+    console.log(check)
     let Ronds = $( svg ).children();
     for (var i = 0; i < N; i += 1){
         var part = Particules[i]
