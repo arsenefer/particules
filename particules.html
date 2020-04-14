@@ -1,10 +1,11 @@
 <html lang="fr">
 <headers>
-    <link href="part.ico" rel="shortcut icon" >
+    <link href="image/part.ico" rel="shortcut icon" type="image/x-icon"/>
     <title>Simulation</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css">
     <script src="model.js"></script>
+    <script src="quadtree.js"></script>
     <script src = "https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </headers>
@@ -13,7 +14,7 @@
     <div class="container">
         <div id ='gauche' class ='side'>
             <div id = 'ControlPanel'>
-                <h3>Tableau de Bord</h3>
+                <h3>Panneau de contrôle</h3>
                 <div id = 'ButtonContainer'>
                     <span class="button" onclick="start_stop()"> start / suspend </span>
                     <span class="button" onclick="add(true)">Add Sick</span>
@@ -23,22 +24,26 @@
                     <div id="Guerri">
                         <span id='TG'>Temps de guerison</span>
                         <input type="range" min="1" max="100" value="20" class="slider" id="T_guerri">
+                        <span class="background">8.8.8.</span>
                         <span class="ecran" id='EG'></span>
                     </div>
                     <div id="Treansmission">
                         <span id='TT'>Transmissivite</span>
                         <input type="range" min="0" max="1" step="0.01" value="14" class="slider" id="Transm">
+                        <span class="background">8.8.8.</span>
                         <span class="ecran" id = 'ET'></span>
                     </div>
                     <div id="Population">
                         <span id='TP'>Population</span>
                         <input type="range" min ='1' max='500' value="200" class="slider" id="Pop">
+                        <span class="background">8.8.8.</span>
                         <span class="ecran" id = 'EP'></span>
                     </div>
 
                     <div id="Confinement">
                         <span id='TC'>Prop. de confinés</span>
                         <input type="range" min="0" max="1" value="0.5" step = '0.01' class="slider" id="conf">
+                        <span class="background">8.8.8.</span>
                         <span class="ecran" id = 'EC'></span>
                     </div>
                 </div>
@@ -46,7 +51,7 @@
         <span id = 'chartContainer'></span>
         </div>
         <div id = 'droite' class = 'side'>
-            <svg></svg>
+            <svg onclick="mouse_position()"></svg>
             <div>
                 <span class="button" id ='rst' onclick="reset()">Reset</span>
             </div>
